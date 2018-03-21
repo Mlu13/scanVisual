@@ -2,21 +2,21 @@
 # Author: Maggie(Manjun) Lu
 # Assignment: Scanning & Visualization
 
+from socket import * 
 
-import socket
+if __name__ == '__main__':
+    target = raw_input('Enter host to scan: ')
+    targetIP = gethostbyname(target)
+    print 'Starting scan on host ', targetIP
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server = ''
+    #scan reserved ports
+    for i in range(1, 26):
+        s = socket(AF_INET, SOCK_STREAM)
 
-def pscan(port):
-	try:
-		s.connect((server, port))
-		return True
-	except:
-		return False
+        result = s.connect_ex((targetIP, i))
 
-for x in range(1,26):
-	if pscan(x):
-		print('Port', x, 'is open')
-	else: 
-		print('Port', x, 'is closed')
+        if(result == 0) :
+            print 'Port %d: OPEN' % (i,)
+        else:
+        	print 'Port %d: CLOSED' % (i,)
+        s.close()
